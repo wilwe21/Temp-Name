@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://ceerf74wd03g2"]
+[gd_scene load_steps=39 format=3 uid="uid://ceerf74wd03g2"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_mol7h"]
 [ext_resource type="Texture2D" uid="uid://cp5dqql8rvygx" path="res://assets/player/stand.gif.png" id="2_7pj7q"]
@@ -132,32 +132,24 @@ region = Rect2(3180, 0, 212, 232)
 [sub_resource type="SpriteFrames" id="SpriteFrames_t3l1q"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 50.0,
 "texture": SubResource("AtlasTexture_b8byt")
 }, {
-"duration": 1.0,
+"duration": 0.55,
 "texture": SubResource("AtlasTexture_ohcuc")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_gor3v")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_6xqm5")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_q07mr")
 }],
 "loop": true,
-"name": &"blink",
-"speed": 20.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_b8byt")
-}],
-"loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -249,20 +241,36 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_umd25"]
-size = Vector2(45, 12)
+size = Vector2(48, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hwog6"]
+size = Vector2(48, 14)
 
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_mol7h")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2.17, 2.17)
+zoom = Vector2(1.275, 1.275)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(2.38419e-07, -5)
-scale = Vector2(0.237618, 0.237618)
+position = Vector2(4, -16)
+scale = Vector2(0.474499, 0.474499)
 sprite_frames = SubResource("SpriteFrames_t3l1q")
-frame_progress = 0.694317
+frame_progress = 0.802914
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 13)
+position = Vector2(4, 25)
 shape = SubResource("RectangleShape2D_umd25")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(4, 25)
+shape = SubResource("RectangleShape2D_hwog6")
+
+[connection signal="property_list_changed" from="." to="." method="_on_property_list_changed"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="property_list_changed" from="Area2D" to="." method="_on_area_2d_property_list_changed"]

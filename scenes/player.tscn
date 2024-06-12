@@ -270,6 +270,15 @@ collision_mask = 4
 position = Vector2(4, 25)
 shape = SubResource("RectangleShape2D_hwog6")
 
+[node name="dead" type="Label" parent="."]
+visible = false
+offset_left = -32.0
+offset_top = -119.0
+offset_right = 49.0
+offset_bottom = -70.0
+text = "You ded 
+R = restart"
+
 [connection signal="property_list_changed" from="." to="." method="_on_property_list_changed"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

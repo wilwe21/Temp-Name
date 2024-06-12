@@ -7,6 +7,9 @@ var alive = true
 var water = false
 
 @onready var sprite = $AnimatedSprite2D
+@onready var dead = $dead
+
+
 func set_fly():
 	if fly:
 		fly = false
@@ -60,6 +63,9 @@ func _physics_process(delta):
 		move_and_slide()
 	else:
 		sprite.hide()
+		dead.show()
+		if Input.is_action_just_pressed("restart"):
+			get_tree().reload_current_scene()
 
 func _on_area_2d_body_entered(body):
 	water = true

@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-const SPEED = 400.0
+var SPEED = 400.0
 var fly = false
 var alive = true
 var water = false
@@ -13,6 +13,7 @@ var water = false
 func set_fly():
 	if fly:
 		fly = false
+		SPEED = 400.0
 		set_collision_layer_value(2, false)
 		set_collision_mask_value(2, false)
 		set_collision_layer_value(1, true)
@@ -20,6 +21,7 @@ func set_fly():
 		emit_signal("fly_signal", false)
 	else:
 		fly = true
+		SPEED = 600.0
 		set_collision_layer_value(2, true)
 		set_collision_mask_value(2, true)
 		set_collision_layer_value(1, false)

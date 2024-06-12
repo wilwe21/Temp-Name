@@ -4,6 +4,7 @@ extends CharacterBody2D
 const SPEED = 400.0
 var fly = false
 var alive = true
+var water = false
 
 @onready var sprite = $AnimatedSprite2D
 func set_fly():
@@ -54,16 +55,17 @@ func _physics_process(delta):
 			sprite.flip_h = true
 		elif direction < 0:
 			sprite.flip_h = false
+		if water && !fly:
+			alive = false
 		move_and_slide()
 	else:
 		sprite.hide()
 
 func _on_area_2d_body_entered(body):
+	water = true
 	if !fly:
-		set_fly()
+		alive = false
 
 
 func _on_area_2d_body_exited(body):
-	if fly:
-		set_fly()
-
+	water = false

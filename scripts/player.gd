@@ -18,7 +18,6 @@ func set_fly():
 		set_collision_mask_value(2, false)
 		set_collision_layer_value(1, true)
 		set_collision_mask_value(1, true)
-		emit_signal("fly_signal", false)
 	else:
 		fly = true
 		SPEED = 600.0
@@ -26,7 +25,6 @@ func set_fly():
 		set_collision_mask_value(2, true)
 		set_collision_layer_value(1, false)
 		set_collision_mask_value(1, false)
-		emit_signal("fly_signal", true)
 
 func _physics_process(delta):
 	if alive:

@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-
 var SPEED = 400.0
 var fly = false
 var alive = true
@@ -8,9 +7,10 @@ var water = false
 
 @onready var sprite = $AnimatedSprite2D
 @onready var dead = $dead
-
+@onready var Global = get_node("/root/Global")
 
 func set_fly():
+	print(Global.ConsoleLog)
 	if fly:
 		fly = false
 		SPEED = 400.0

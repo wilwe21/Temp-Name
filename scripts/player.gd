@@ -4,13 +4,13 @@ var SPEED = 400.0
 var fly = false
 var alive = true
 var water = false
+var movable = true
 
 @onready var sprite = $AnimatedSprite2D
 @onready var dead = $dead
 @onready var Global = get_node("/root/Global")
 
 func set_fly():
-	print(Global.ConsoleLog)
 	if fly:
 		fly = false
 		SPEED = 400.0
@@ -26,41 +26,54 @@ func set_fly():
 		set_collision_layer_value(1, false)
 		set_collision_mask_value(1, false)
 
+func action():
+	movable = false
+	sprite.rotate(PI/2)
+	sprite.queue_redraw()
+	sprite.play("action")
+	var timer = get_tree().create_timer(1.45)
+	await timer.timeout
+	movable = true
+
+
 func _physics_process(delta):
 	if alive:
-		var direction = Input.get_axis("left", "right")
-		var direction2 = Input.get_axis("up", "down")
-		if Input.is_action_just_pressed("fly"):
-			set_fly()
-		if direction:
-			if !direction2:
-				velocity.x = direction * SPEED
+		if movable:
+			var direction = Input.get_axis("left", "right")
+			var direction2 = Input.get_axis("up", "down")
+			if Input.is_action_just_pressed("fly"):
+				set_fly()
+			if Input.is_action_just_pressed("action"):
+				action()
+			if direction:
+				if !direction2:
+					velocity.x = direction * SPEED
+				else:
+					velocity.x = direction * SPEED/1.5
+				if !fly:
+					sprite.play('walk')
 			else:
-				velocity.x = direction * SPEED/1.5
-			if !fly:
-				sprite.play('walk')
-		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-		if direction2:
-			if !direction:
-				velocity.y = direction2 * SPEED
+				velocity.x = move_toward(velocity.x, 0, SPEED)
+			if direction2:
+				if !direction:
+					velocity.y = direction2 * SPEED
+				else:
+					velocity.y = direction2 * SPEED/1.5
+				if !fly:
+					sprite.play('walk')
 			else:
-				velocity.y = direction2 * SPEED/1.5
-			if !fly:
-				sprite.play('walk')
-		else:
-			velocity.y = move_toward(velocity.y, 0, SPEED)
-		if fly:
-			sprite.play('fly')
-		elif !direction && !direction2:
-			sprite.play('default')
-		if direction > 0:
-			sprite.flip_h = true
-		elif direction < 0:
-			sprite.flip_h = false
-		if water && !fly:
-			alive = false
-		move_and_slide()
+				velocity.y = move_toward(velocity.y, 0, SPEED)
+			if fly:
+				sprite.play('fly')
+			elif !direction && !direction2:
+				sprite.play('default')
+			if direction > 0:
+				sprite.flip_h = true
+			elif direction < 0:
+				sprite.flip_h = false
+			if water && !fly:
+				alive = false
+			move_and_slide()
 	else:
 		sprite.hide()
 		dead.show()

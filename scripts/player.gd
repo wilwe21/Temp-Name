@@ -28,10 +28,11 @@ func set_fly():
 
 func action():
 	movable = false
-	sprite.rotate(PI/2)
-	sprite.queue_redraw()
-	sprite.play("action")
-	var timer = get_tree().create_timer(1.45)
+	if !fly:
+		sprite.play("action")
+	else:
+		sprite.play("fly_action")
+	var timer = get_tree().create_timer(1.0)
 	await timer.timeout
 	movable = true
 
@@ -50,7 +51,7 @@ func _physics_process(delta):
 					velocity.x = direction * SPEED
 				else:
 					velocity.x = direction * SPEED/1.5
-				if !fly:
+				if !fly && movable:
 					sprite.play('walk')
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -59,13 +60,13 @@ func _physics_process(delta):
 					velocity.y = direction2 * SPEED
 				else:
 					velocity.y = direction2 * SPEED/1.5
-				if !fly:
+				if !fly && movable:
 					sprite.play('walk')
 			else:
 				velocity.y = move_toward(velocity.y, 0, SPEED)
-			if fly:
+			if fly && movable:
 				sprite.play('fly')
-			elif !direction && !direction2:
+			elif !direction && !direction2 && movable:
 				sprite.play('default')
 			if direction > 0:
 				sprite.flip_h = true

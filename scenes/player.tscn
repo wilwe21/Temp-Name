@@ -684,9 +684,6 @@ font_size = 25
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_mol7h")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.275, 1.275)
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(4, -16)
 scale = Vector2(0.474499, 0.474499)

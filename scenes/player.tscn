@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=3 uid="uid://ceerf74wd03g2"]
+[gd_scene load_steps=103 format=3 uid="uid://ceerf74wd03g2"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_mol7h"]
 [ext_resource type="Texture2D" uid="uid://cp5dqql8rvygx" path="res://assets/player/stand.gif.png" id="2_7pj7q"]
@@ -681,6 +681,9 @@ size = Vector2(48, 14)
 [sub_resource type="LabelSettings" id="LabelSettings_1iowm"]
 font_size = 25
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kfxoy"]
+size = Vector2(51, 56)
+
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_mol7h")
 
@@ -688,6 +691,9 @@ script = ExtResource("1_mol7h")
 position = Vector2(4, -16)
 scale = Vector2(0.474499, 0.474499)
 sprite_frames = SubResource("SpriteFrames_t3l1q")
+animation = &"action"
+frame = 29
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(4, 25)
@@ -711,7 +717,26 @@ text = "You ded
 R = restart"
 label_settings = SubResource("LabelSettings_1iowm")
 
+[node name="action" type="Label" parent="."]
+visible = false
+offset_left = -58.0
+offset_top = -119.0
+offset_right = 69.0
+offset_bottom = -46.0
+text = "e = action"
+label_settings = SubResource("LabelSettings_1iowm")
+
+[node name="Area2D2" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+position = Vector2(-25.5, 4)
+shape = SubResource("RectangleShape2D_kfxoy")
+
 [connection signal="property_list_changed" from="." to="." method="_on_property_list_changed"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
 [connection signal="property_list_changed" from="Area2D" to="." method="_on_area_2d_property_list_changed"]
+[connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_2_body_entered"]
+[connection signal="body_exited" from="Area2D2" to="." method="_on_area_2d_2_body_exited"]

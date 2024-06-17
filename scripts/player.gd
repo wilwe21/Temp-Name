@@ -5,9 +5,11 @@ var fly = false
 var alive = true
 var water = false
 var movable = true
+var actAv = false
 
 @onready var sprite = $AnimatedSprite2D
 @onready var dead = $dead
+@onready var actionlab = $action
 @onready var Global = get_node("/root/Global")
 
 func set_fly():
@@ -34,11 +36,17 @@ func action():
 		sprite.play("fly_action")
 	var timer = get_tree().create_timer(1.0)
 	await timer.timeout
+	if actAv:
+		print("Action Complet")
 	movable = true
 
 
 func _physics_process(delta):
 	if alive:
+		if actAv:
+			actionlab.show()
+		else:
+			actionlab.hide()
 		if movable:
 			var direction = Input.get_axis("left", "right")
 			var direction2 = Input.get_axis("up", "down")
@@ -86,6 +94,11 @@ func _on_area_2d_body_entered(body):
 	if !fly:
 		alive = false
 
-
 func _on_area_2d_body_exited(body):
 	water = false
+
+func _on_area_2d_2_body_entered(body):
+	actAv = true
+
+func _on_area_2d_2_body_exited(body):
+	actAv = false

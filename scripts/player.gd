@@ -84,6 +84,7 @@ func _physics_process(delta):
 				alive = false
 			move_and_slide()
 	else:
+		actionlab.hide()
 		sprite.hide()
 		dead.show()
 		if Input.is_action_just_pressed("restart"):

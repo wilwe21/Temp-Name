@@ -6,6 +6,7 @@ var alive = true
 var water = false
 var movable = true
 var actAv = false
+var noclipvar = false
 
 @onready var sprite = $AnimatedSprite2D
 @onready var dead = $dead
@@ -13,14 +14,14 @@ var actAv = false
 @onready var Global = get_node("/root/Global")
 
 func set_fly():
-	if fly:
+	if fly && !noclipvar:
 		fly = false
 		SPEED = 400.0
 		set_collision_layer_value(2, false)
 		set_collision_mask_value(2, false)
 		set_collision_layer_value(1, true)
 		set_collision_mask_value(1, true)
-	else:
+	elif !noclipvar:
 		fly = true
 		SPEED = 600.0
 		set_collision_layer_value(2, true)
@@ -28,9 +29,23 @@ func set_fly():
 		set_collision_layer_value(1, false)
 		set_collision_mask_value(1, false)
 
+func noclip():
+	if noclipvar:
+		noclipvar = false
+		set_collision_layer_value(2, false)
+		set_collision_mask_value(2, false)
+		set_collision_layer_value(1, true)
+		set_collision_mask_value(1, true)
+	else:
+		noclipvar = true
+		set_collision_layer_value(2, false)
+		set_collision_mask_value(2, false)
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(1, false)
+
 func action():
 	movable = false
-	if !fly:
+	if !fly && !noclipvar:
 		sprite.play("action")
 	else:
 		sprite.play("fly_action")
@@ -54,12 +69,14 @@ func _physics_process(delta):
 				set_fly()
 			if Input.is_action_just_pressed("action"):
 				action()
+			if Input.is_action_just_pressed("no-clip"):
+				noclip()
 			if direction:
 				if !direction2:
 					velocity.x = direction * SPEED
 				else:
 					velocity.x = direction * SPEED/1.5
-				if !fly && movable:
+				if !fly && !noclipvar && movable:
 					sprite.play('walk')
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -68,11 +85,11 @@ func _physics_process(delta):
 					velocity.y = direction2 * SPEED
 				else:
 					velocity.y = direction2 * SPEED/1.5
-				if !fly && movable:
+				if !fly && !noclipvar && movable:
 					sprite.play('walk')
 			else:
 				velocity.y = move_toward(velocity.y, 0, SPEED)
-			if fly && movable:
+			if fly || noclipvar && movable:
 				sprite.play('fly')
 			elif !direction && !direction2 && movable:
 				sprite.play('default')
@@ -80,8 +97,8 @@ func _physics_process(delta):
 				sprite.flip_h = true
 			elif direction < 0:
 				sprite.flip_h = false
-			if water && !fly:
-				alive = false
+			if water && !fly && !noclipvar:
+					alive = false
 			move_and_slide()
 	else:
 		actionlab.hide()
@@ -92,7 +109,7 @@ func _physics_process(delta):
 
 func _on_area_2d_body_entered(body):
 	water = true
-	if !fly:
+	if !fly && !noclipvar:
 		alive = false
 
 func _on_area_2d_body_exited(body):

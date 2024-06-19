@@ -120,3 +120,7 @@ func _on_area_2d_2_body_entered(body):
 
 func _on_area_2d_2_body_exited(body):
 	actAv = false
+
+
+func _on_area_2d_3_body_entered(body):
+	get_tree().change_scene_to_file("res://scenes/room_2.tscn")
